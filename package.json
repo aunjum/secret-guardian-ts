@@ -1,6 +1,6 @@
 {
   "name": "secret-guardian-ts",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Plug-and-play pre-commit & pre-push secret scanner that blocks secrets (TypeScript compatible).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,12 +32,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts.git"
+    "url": "https://github.com/aunjum/secret-guardian-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts/issues"
+    "url": "https://github.com/aunjum/secret-guardian-ts/issues"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/secret-guardian-ts#readme",
+  "homepage": "https://github.com/aunjum/secret-guardian-ts#readme",
   "files": [
     "dist",
     "README.md",

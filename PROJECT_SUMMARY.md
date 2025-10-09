@@ -54,7 +54,7 @@
 
 ### 7. Package.json Enhancements
 Added/Updated:
-- `repository`, `bugs`, `homepage` fields (need YOUR_USERNAME)
+- `repository`, `bugs`, `homepage` fields (need aunjum)
 - `files` field (specifies what to publish)
 - `engines` field (Node.js >= 14.0.0)
 - `scripts`: test, lint, prepublishOnly
@@ -214,7 +214,7 @@ Commits: 2
 ### Next Steps
 ```bash
 # Create GitHub repo, then:
-git remote add origin https://github.com/YOUR_USERNAME/secret-guardian-ts.git
+git remote add origin https://github.com/aunjum/secret-guardian-ts.git
 git branch -M main
 git push -u origin main
 ```

@@ -115,7 +115,7 @@ git commit -m "test"
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/secret-guardian-ts.git
+git clone https://github.com/aunjum/secret-guardian-ts.git
 cd secret-guardian-ts
 
 # Install dependencies

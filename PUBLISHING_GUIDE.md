@@ -22,15 +22,15 @@ Before publishing to npm, verify the following:
 ```json
 "repository": {
   "type": "git",
-  "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts.git"
+  "url": "https://github.com/aunjum/secret-guardian-ts.git"
 },
 "bugs": {
-  "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts/issues"
+  "url": "https://github.com/aunjum/secret-guardian-ts/issues"
 },
-"homepage": "https://github.com/YOUR_USERNAME/secret-guardian-ts#readme"
+"homepage": "https://github.com/aunjum/secret-guardian-ts#readme"
 ```
 
-Replace `YOUR_USERNAME` with your actual GitHub username.
+Replace `aunjum` with your actual GitHub username.
 
 ---
 
@@ -79,7 +79,7 @@ git commit -m "test"
 
 ```bash
 # Create repository on GitHub first, then:
-git remote add origin https://github.com/YOUR_USERNAME/secret-guardian-ts.git
+git remote add origin https://github.com/aunjum/secret-guardian-ts.git
 git branch -M main
 git push -u origin main
 ```

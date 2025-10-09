@@ -10,17 +10,17 @@ Everything has been set up and tested successfully! Here's what you need to do n
 
 ### 🔴 STEP 1: Update GitHub Username (REQUIRED)
 
-Open `package.json` and replace `YOUR_USERNAME` with your actual GitHub username in these 3 places:
+Open `package.json` and replace `aunjum` with your actual GitHub username in these 3 places:
 
 ```json
 "repository": {
   "type": "git",
-  "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts.git"
+  "url": "https://github.com/aunjum/secret-guardian-ts.git"
 },
 "bugs": {
-  "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts/issues"
+  "url": "https://github.com/aunjum/secret-guardian-ts/issues"
 },
-"homepage": "https://github.com/YOUR_USERNAME/secret-guardian-ts#readme"
+"homepage": "https://github.com/aunjum/secret-guardian-ts#readme"
 ```
 
 ---
@@ -41,12 +41,11 @@ Open `package.json` and replace `YOUR_USERNAME` with your actual GitHub username
 Run these commands in your terminal:
 
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/secret-guardian-ts.git
+git remote add origin https://github.com/aunjum/secret-guardian-ts.git
 git branch -M main
 git push -u origin main
 ```
 
-Replace `YOUR_USERNAME` with your actual GitHub username.
 
 ---
 
