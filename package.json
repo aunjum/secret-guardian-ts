@@ -1,0 +1,76 @@
+{
+  "name": "secret-guardian-ts",
+  "version": "1.0.0",
+  "description": "Plug-and-play pre-commit & pre-push secret scanner that blocks secrets (TypeScript compatible).",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "secret-guardian": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "husky",
+    "postinstall": "node ./dist/postinstall.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "git",
+    "secrets",
+    "pre-commit",
+    "pre-push",
+    "security",
+    "secret-scanner",
+    "git-hooks",
+    "typescript",
+    "security-tools",
+    "secret-detection"
+  ],
+  "author": "Tanvir Aunjum <tanviraunjum030@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/secret-guardian-ts/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/secret-guardian-ts#readme",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.7",
+    "simple-git": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.2",
+    "@types/inquirer": "^9.0.4",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.5.6",
+    "husky": "^9.0.11"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "secretGuardian": {
+    "mode": "prompt",
+    "contact": {
+      "name": "Tanvir Aunjum",
+      "email": "tanviraunjum030@gmail.com",
+      "whatsapp": "+8801611756322",
+      "country": "Bangladesh"
+    },
+    "banner": {
+      "enabled": true,
+      "message": "I am looking for a good job"
+    }
+  }
+}

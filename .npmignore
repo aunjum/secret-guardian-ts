@@ -1,0 +1,47 @@
+# Source files (we publish compiled dist/)
+src/
+tsconfig.json
+
+# Tests
+test/
+tests/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+
+# Development files
+.vscode/
+.idea/
+.editorconfig
+.prettierrc
+.eslintrc*
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (except README)
+docs/
+CONTRIBUTING.md
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
+*.tmp
+.temp/
+hooks/
+
+# Keep only what we need:
+# - dist/ (compiled code)
+# - package.json
+# - README.md
+# - LICENSE (if exists)
+
