@@ -34,5 +34,17 @@ describe("scanText", () => {
         expect(results.length).toBeGreaterThan(0);
         expect(results[0].name).toBe("JWT Token");
     });
+
+    test("should detect GitHub token", () => {
+        const content = "GITHUB_TOKEN=ghp_abcdefghijklmnopqrstuvwxyz123456";
+        const results = scanText(content);
+        expect(results.some(r => r.name === "GitHub Token")).toBe(true);
+    });
+
+    test("should detect OpenAI API key", () => {
+        const content = "OPENAI_API_KEY='sk-abcdefghijklmnopqrstuvwxyz123456'";
+        const results = scanText(content);
+        expect(results.some(r => r.name === "OpenAI API Key")).toBe(true);
+    });
 });
 

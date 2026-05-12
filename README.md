@@ -3,19 +3,18 @@
 [![npm version](https://badge.fury.io/js/secret-guardian-ts.svg)](https://www.npmjs.com/package/secret-guardian-ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A **plug-and-play TypeScript-compatible pre-commit & pre-push secret scanner** that helps prevent accidentally committing secrets to your repository. Automatically installs git hooks during `npm install` and warns or blocks commits/pushes when potential secrets are detected.
+A plug-and-play `pre-commit` and `pre-push` secret scanner for Node/TypeScript projects.  
+It installs hooks automatically and blocks or prompts when secrets are detected in staged code.
 
 ## ✨ Features
 
-- 🔒 **Auto-installs** `pre-commit` and `pre-push` hooks during `npm install`
-- 🔍 **Scans staged files** for common secret patterns (AWS keys, private keys, passwords, JWT tokens, API keys)
-- 🎯 **Two modes**: 
-  - `strict` - Automatically blocks commits with secrets
-  - `prompt` - Asks user to proceed (default)
-- 📦 **TypeScript source** with compiled `dist/` for publishing
-- 🎨 **Configurable banner** to print contact info during installation
-- ⚡ **Zero configuration** - works out of the box
-- 🧪 **Fully tested** with Jest
+- Auto-installs `pre-commit` and `pre-push` hooks on install
+- Scans **staged git content** (not just working tree files) to reduce bypass risk
+- Shows `file path + line number + masked snippet` for each finding
+- Supports `prompt` mode and `strict` mode
+- Defaults to secure fail-closed behavior on runtime scanner errors
+- Expanded detection set: AWS keys, private keys, passwords, JWTs, GitHub tokens, Slack tokens, OpenAI keys, and generic API keys
+- Ships ESM + CJS + type definitions
 
 ## 📦 Installation
 
@@ -23,34 +22,22 @@ A **plug-and-play TypeScript-compatible pre-commit & pre-push secret scanner** t
 npm install secret-guardian-ts --save-dev
 ```
 
-That's it! The git hooks will be automatically installed.
+Hooks are installed automatically in `.git/hooks`.
 
-## 🚀 Usage
+## 🚀 How it works
 
-After installation, the package automatically:
+1. You stage files with `git add`.
+2. On commit/push, Secret Guardian scans staged content.
+3. If secrets are found, it prints findings with context:
 
-1. Installs `pre-commit` and `pre-push` hooks in your `.git/hooks/` directory
-2. Scans your staged files before each commit
-3. Alerts you if potential secrets are detected
-
-### Basic Workflow
-
-```bash
-# Make changes to your code
-echo "API_KEY='sk-1234567890abcdef'" > config.js
-
-# Try to commit
-git add config.js
-git commit -m "Add config"
-
-# Secret Guardian will detect the API key and warn you!
+```text
+• src/config.ts:12 (OpenAI API Key)
+  OPENAI_API_KEY = "sk-a***9z"
 ```
 
 ## ⚙️ Configuration
 
-### Mode Configuration
-
-You can configure the behavior by adding a `secretGuardian` section to your `package.json`:
+Add a `secretGuardian` section in your `package.json`:
 
 ```json
 {
@@ -59,6 +46,7 @@ You can configure the behavior by adding a `secretGuardian` section to your `pac
     "contact": {
       "name": "Your Name",
       "email": "your.email@example.com",
+      "website": "https://example.com",
       "whatsapp": "+1234567890",
       "country": "Your Country"
     },
@@ -72,146 +60,75 @@ You can configure the behavior by adding a `secretGuardian` section to your `pac
 
 ### Modes
 
-- **`prompt`** (default): Asks for confirmation when secrets are detected
-- **`strict`**: Automatically blocks commits/pushes with secrets
+- `prompt` (default): asks whether to proceed when secrets are found
+- `strict`: blocks commit/push when secrets are found
 
-You can also set the mode via environment variable:
+Set mode via environment variable:
 
 ```bash
 export SECRET_GUARDIAN_MODE=strict
 ```
 
-## 🔍 Detected Patterns
+### Error behavior
 
-Secret Guardian currently detects:
-
-| Pattern | Example | Regex |
-|---------|---------|-------|
-| AWS Access Key | `AKIAIOSFODNN7EXAMPLE` | `AKIA[0-9A-Z]{16}` |
-| Private Key | `-----BEGIN RSA PRIVATE KEY-----` | `-----BEGIN (RSA )?PRIVATE KEY-----` |
-| Generic Password | `password: "secret123"` | `password\s*[:=]\s*["'][^"']+["']` |
-| JWT Token | `eyJhbGciOiJIUz...` | `eyJ[A-Za-z0-9_-]+?\..*` |
-| API Key | `api_key: "abcd1234..."` | `api[_-]?key\s*[:=]\s*["'][A-Za-z0-9-_]{16,}["']` |
-
-## 🧪 Testing Locally
-
-You can test the scanner manually:
+By default, scanner runtime errors fail closed (block commit/push).  
+If you explicitly want fail-open behavior:
 
 ```bash
-# Install the package
-npm install secret-guardian-ts --save-dev
-
-# Create a test file with a secret
-echo "AWS_KEY=AKIAIOSFODNN7EXAMPLE" > test.txt
-
-# Stage and try to commit
-git add test.txt
-git commit -m "test"
-
-# Secret Guardian will detect the AWS key!
+export SECRET_GUARDIAN_FAIL_OPEN=true
 ```
 
-## 🛠️ Development
+## 🔍 Detected patterns
 
-```bash
-# Clone the repository
-git clone https://github.com/aunjum/secret-guardian-ts.git
-cd secret-guardian-ts
+Current detections include:
 
-# Install dependencies
-npm install
+- AWS Access Key ID
+- AWS Secret Access Key (assignment-style matches)
+- Private key headers
+- Generic password assignments
+- JWT tokens
+- GitHub tokens (`ghp_`, `gho_`, `ghu_`, `ghs_`, `ghr_`)
+- Slack tokens (`xoxb-`, `xoxa-`, etc.)
+- OpenAI API keys (`sk-...`)
+- Generic API key assignments
 
-# Build
-npm run build
-
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Type checking
-npm run lint
-```
-
-## 📝 Scripts
-
-- `npm run build` - Compile TypeScript to JavaScript
-- `npm test` - Run Jest tests
-- `npm run test:watch` - Run tests in watch mode
-- `npm run lint` - Run TypeScript type checking
-- `npm run prepare` - Auto-runs on `npm install` (builds the project)
-- `npm run prepublishOnly` - Runs before publishing (builds and tests)
-
-## 🔧 Manual Hook Installation
-
-If hooks aren't installed automatically, you can install them manually:
+## 🔧 Manual hook installation
 
 ```bash
 npx secret-guardian install-hooks
 ```
 
-Or using the Node CLI:
+Or:
 
 ```bash
-node ./node_modules/secret-guardian-ts/dist/index.js --install-hooks
+node ./node_modules/secret-guardian-ts/dist/index.cjs --install-hooks
 ```
 
-## 🤝 Contributing
+## 🧪 Development
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+```bash
+npm install
+npm run build
+npm test
+npm run lint
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 📝 Scripts
 
-## 🐛 Known Issues
-
-- On Windows, you might need to run `chmod +x .git/hooks/pre-commit` if hooks don't execute
-- Large repositories (>1000 files) might experience slower scan times
+- `npm run build` - Build with tsup (ESM + CJS + d.ts)
+- `npm test` - Run Jest tests
+- `npm run test:watch` - Run Jest in watch mode
+- `npm run lint` - Type-check with TypeScript
+- `npm run prepublishOnly` - Build and test before publish
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT - see [LICENSE](LICENSE).
 
 ## 👤 Author
 
 **Tanvir Aunjum**
 - Email: tanviraunjum030@gmail.com
+- Website: https://tanviraunjum.space
 - WhatsApp: +8801611756322
 - Country: Bangladesh
-
-## 🙏 Acknowledgments
-
-- Built with [TypeScript](https://www.typescriptlang.org/)
-- CLI colors by [Chalk](https://github.com/chalk/chalk)
-- Interactive prompts by [Inquirer](https://github.com/SBoudrias/Inquirer.js)
-- Git operations by [simple-git](https://github.com/steveukx/git-js)
-- Testing with [Jest](https://jestjs.io/)
-- Git hooks managed by [Husky](https://typicode.github.io/husky/)
-
-## 📚 Related Projects
-
-- [git-secrets](https://github.com/awslabs/git-secrets) - Amazon's solution for preventing secrets
-- [detect-secrets](https://github.com/Yelp/detect-secrets) - Yelp's enterprise secret scanning
-- [gitleaks](https://github.com/gitleaks/gitleaks) - SAST tool for detecting hardcoded secrets
-
-## ⭐ Show Your Support
-
-If this project helped you, please consider giving it a ⭐️!
-
-## 📮 Contact
-
-Looking for opportunities! If you have a position or project that needs:
-- TypeScript/JavaScript development
-- Security tooling
-- CLI applications
-- NPM package development
-
-Feel free to reach out!
-
----
-
-Made with ❤️ and TypeScript

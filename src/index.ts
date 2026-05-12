@@ -17,7 +17,10 @@ async function run(kind: string | undefined) {
     }
 
     console.log(chalk.redBright(`\n⚠️ Potential secrets found (${findings.length}):`));
-    for (const f of findings) console.log(chalk.yellow(`• ${f.file}: ${f.patternName}`));
+    for (const f of findings) {
+        console.log(chalk.yellow(`• ${f.file}:${f.line} (${f.patternName})`));
+        console.log(chalk.gray(`  ${f.snippet}`));
+    }
 
     if (mode === "strict") {
         console.log(chalk.red("\n🚫 Commit/push blocked by secret-guardian-ts (strict mode)."));
@@ -42,5 +45,6 @@ if (process.argv.includes("--install-hooks") || process.argv[2] === "install-hoo
 
 run(process.argv[2]).catch(err => {
     console.error("Error running secret-guardian-ts:", err);
-    process.exit(0); // allow commits on unexpected errors (fail-open)
+    const failOpen = (process.env.SECRET_GUARDIAN_FAIL_OPEN || "").toLowerCase() === "true";
+    process.exit(failOpen ? 0 : 1);
 });

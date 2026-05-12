@@ -1,10 +1,18 @@
 import chalk from "chalk";
 import installHooks from "./hookInstaller";
+import fs from "fs";
+import path from "path";
 
 function printBanner() {
     // read package.json contact info if present
     let pkg: any = {};
-    try { pkg = require(process.cwd() + "/package.json"); } catch(e) { pkg = {}; }
+    try {
+        const pkgPath = path.join(process.cwd(), "package.json");
+        const raw = fs.readFileSync(pkgPath, "utf8");
+        pkg = JSON.parse(raw);
+    } catch(e) {
+        pkg = {};
+    }
 
     const sg = pkg.secretGuardian || {};
     const contact = sg.contact || {};
@@ -18,6 +26,7 @@ function printBanner() {
 
     console.log(chalk.bold("Author:"), pkg.author || contact.name || "");
     console.log(chalk.bold("Email:"), contact.email || "EMAIL_PLACEHOLDER");
+    console.log(chalk.bold("Website:"), contact.website || "WEBSITE_PLACEHOLDER");
     console.log(chalk.bold("WhatsApp:"), contact.whatsapp || "WHATSAPP_PLACEHOLDER");
     console.log(chalk.bold("Country:"), contact.country || "COUNTRY_PLACEHOLDER");
     console.log(chalk.yellow(`\n${banner.message}\n`));
